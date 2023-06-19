@@ -4,7 +4,6 @@ Django==4.2.2
 django-cors-headers==4.1.0
 django-restframework==0.0.1
 djangorestframework==3.14.0
-drf-spectacular==0.26.2
 inflection==0.5.1
 jsonschema==4.17.3
 Pillow==9.5.0
