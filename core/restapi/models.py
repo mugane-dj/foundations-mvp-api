@@ -1,10 +1,12 @@
 from django.db import models
 from uuid import uuid4
 
+
 class Complaint(models.Model):
     """Model definition for Complaint."""
+
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     user_id = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     description = models.TextField()
     status = models.CharField(max_length=255)
@@ -22,10 +24,11 @@ class Complaint(models.Model):
 
     def __str__(self):
         return self.name, self.status
-    
+
 
 class Comment(models.Model):
     """Model definition for Comment."""
+
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     complaint_id = models.ForeignKey(Complaint, on_delete=models.CASCADE)
     user_id = models.ForeignKey("auth.User", on_delete=models.CASCADE)
@@ -40,9 +43,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment
-    
+
+
 class Reward(models.Model):
     """Model definition for Reward."""
+
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     user_id = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     complaint_id = models.ForeignKey(Complaint, on_delete=models.CASCADE)
