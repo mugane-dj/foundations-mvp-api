@@ -1,13 +1,16 @@
 import uuid
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from .models import Complaint
+from .models import User, Complaint
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["username", "email", "password"]
+
+    username = serializers.CharField(max_length=255, required=True)
+    email = serializers.EmailField(max_length=255, required=True)
+    password = serializers.CharField(max_length=255, required=True)
 
     def validate(self, attrs):
         username = attrs.get("username", "")
@@ -21,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+        raise NotImplementedError
 
     def update(self, instance, validated_data):
         raise NotImplementedError
@@ -68,22 +71,11 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "password"]
 
-    def validate(self, attrs):
-        id = self.context["request"].parser_context["kwargs"]["id"]
-        try:
-            User.objects.get(id=id)
-        except User.DoesNotExist:
-            raise serializers.ValidationError({"id": "User does not exist."})
-
-        return super().validate(attrs)
-
     def create(self, validated_data):
         raise NotImplementedError
 
     def update(self, instance, validated_data):
-        instance.set_password(validated_data["password"])
-        instance.save()
-        return instance
+        raise NotImplementedError
 
 
 class UserDeleteSerializer(serializers.ModelSerializer):
@@ -179,7 +171,7 @@ class ComplaintUpdateSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         complaint_id = self.context["request"].parser_context["kwargs"]["id"]
         try:
-            uuid.UUID(str(complaint_id))  # Validate if it's a valid UUID
+            uuid.UUID(str(complaint_id))
         except ValueError:
             raise serializers.ValidationError({"id": "Invalid UUID format"})
         try:
@@ -192,6 +184,11 @@ class ComplaintUpdateSerializer(serializers.ModelSerializer):
         raise NotImplementedError
 
     def update(self, instance, validated_data):
+        complaint_id = self.context["request"].parser_context["kwargs"]["id"]
+        complaint = Complaint.objects.get(id=complaint_id)
+        if validated_data.get("status") == "COMPLETED":
+            user = complaint.user
+            user.token += 100
         instance.status = validated_data.get("status", instance.status)
         instance.save()
         return instance

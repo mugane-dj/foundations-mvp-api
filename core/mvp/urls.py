@@ -2,8 +2,8 @@ from django.urls import path
 from .users import (
     GetUserView,
     ListUserView,
-    CreateUserView,
-    UpdateUserView,
+    create_user,
+    update_user,
     DestroyUserView,
 )
 from .complaints import (
@@ -14,14 +14,14 @@ from .complaints import (
     DestroyComplaintView,
 )
 
-app_name = "restapi"
+app_name = "mvp"
 
 urlpatterns = [
     path("user/<int:id>", GetUserView.as_view(), name="get-user"),
     path("user/all", ListUserView.as_view(), name="get-all-users"),
-    path("user/create", CreateUserView.as_view(), name="create-user"),
-    path("user/update/<int:id>", UpdateUserView.as_view(), name="update-user"),
-    path("user/delete/<int:id>", DestroyUserView(), name="delete-user"),
+    path("user/create", create_user, name="create-user"),
+    path("user/update/<int:id>", update_user, name="update-user"),
+    path("user/delete/<int:id>", DestroyUserView.as_view(), name="delete-user"),
     path("complaint/<uuid:id>", GetComplaintView.as_view(), name="get-complaint"),
     path("complaint/all", ListComplaintView.as_view(), name="get-all-complaints"),
     path("complaint/create", CreateComplaintView.as_view(), name="create-complaint"),

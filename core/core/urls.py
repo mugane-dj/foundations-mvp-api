@@ -21,5 +21,5 @@ from .views import home
 urlpatterns = [
     path("", home, name="home"),
     path("admin/", admin.site.urls),
-    re_path(r"^v1/", include("restapi.urls"), name="v1:restapi"),
+    re_path(r"^v1/", include("mvp.urls"), name="v1:mvp"),
 ]

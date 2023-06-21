@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class RestapiConfig(AppConfig):
+class MvpConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "restapi"
+    name = "mvp"
