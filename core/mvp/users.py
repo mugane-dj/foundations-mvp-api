@@ -41,6 +41,17 @@ def update_user(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(["GET"])
+def get_user_token(request, id):
+    try:
+        user = User.objects.get(id=id)
+    except User.DoesNotExist:
+        return Response(
+            {"message": "User does not exist."}, status=status.HTTP_404_NOT_FOUND
+        )
+    return Response({"tokens": user.token}, status=status.HTTP_200_OK)
+
+
 class GetUserView(generics.RetrieveAPIView):
     serializer_class = UserGetSerializer
     lookup_field = "id"

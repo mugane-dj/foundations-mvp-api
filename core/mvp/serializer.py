@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id"]
+        fields = "__all__"
 
     def validate(self, attrs):
         id = attrs.get("id", "")
@@ -186,9 +186,10 @@ class ComplaintUpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         complaint_id = self.context["request"].parser_context["kwargs"]["id"]
         complaint = Complaint.objects.get(id=complaint_id)
-        if validated_data.get("status") == "COMPLETED":
+        if validated_data.get("status") == "completed":
             user = complaint.user
             user.token += 100
+            user.save()
         instance.status = validated_data.get("status", instance.status)
         instance.save()
         return instance

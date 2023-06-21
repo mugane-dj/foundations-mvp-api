@@ -4,6 +4,7 @@ from .users import (
     ListUserView,
     create_user,
     update_user,
+    get_user_token,
     DestroyUserView,
 )
 from .complaints import (
@@ -19,6 +20,7 @@ app_name = "mvp"
 urlpatterns = [
     path("user/<int:id>", GetUserView.as_view(), name="get-user"),
     path("user/all", ListUserView.as_view(), name="get-all-users"),
+    path("user/<int:id>/token", get_user_token, name="get-user-token"),
     path("user/create", create_user, name="create-user"),
     path("user/update/<int:id>", update_user, name="update-user"),
     path("user/delete/<int:id>", DestroyUserView.as_view(), name="delete-user"),

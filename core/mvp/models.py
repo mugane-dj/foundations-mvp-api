@@ -48,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.BigAutoField(primary_key=True, editable=False)
     username = models.CharField(max_length=255, unique=True, null=False, editable=False)
     email = models.EmailField(max_length=255, unique=True, null=False)
-    token = models.IntegerField(null=True, editable=False, default=0)
+    token = models.IntegerField(null=True, editable=True, default=0)
     is_active = models.BooleanField(default=True, editable=True)
     is_staff = models.BooleanField(default=False, editable=True)
     is_superuser = models.BooleanField(default=False, editable=True)
