@@ -177,3 +177,5 @@ REST_FRAMEWORK = {
     "ALLOWED_VERSION": "v1",
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
 }
+
+# Spectacular
