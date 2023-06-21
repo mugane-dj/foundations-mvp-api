@@ -80,7 +80,7 @@ class Complaint(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=20)
     longitude = models.FloatField(null=True)
     latitude = models.FloatField(null=True)
-    image = models.ImageField(upload_to="media/complaints")
+    image = models.ImageField(upload_to="complaints")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
