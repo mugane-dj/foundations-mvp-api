@@ -1,6 +1,6 @@
 import uuid
 from rest_framework import serializers
-from .models import User, Complaint
+from .models import User, Complaint, Comment
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -206,6 +206,117 @@ class ComplaintDeleteSerializer(serializers.ModelSerializer):
             Complaint.objects.get(id=complaint_id)
         except Complaint.DoesNotExist:
             raise serializers.ValidationError({"id": "Complaint does not exist"})
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        raise NotImplementedError
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = [
+            "id",
+            "complaint",
+            "user",
+            "comment",
+        ]
+
+    def validate(self, attrs):
+        user = attrs.get("user", "")
+        complaint = attrs.get("complaint", "")
+        try:
+            User(user)
+            Complaint(complaint)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({"user": "User does not exist."})
+        except Complaint.DoesNotExist:
+            raise serializers.ValidationError(
+                {"complaint": "Complaint does not exist."}
+            )
+
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        comment = Comment.objects.create(**validated_data)
+        return comment
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError
+
+
+class CommentGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+
+    def validate(self, attrs):
+        comment_id = attrs.get("id", "")
+        try:
+            Comment.objects.get(id=comment_id)
+        except Comment.DoesNotExist:
+            raise serializers.ValidationError({"id": "Comment does not exist"})
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        raise NotImplementedError
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError
+
+
+class CommentGetAllSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+
+    def create(self, validated_data):
+        raise NotImplementedError
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError
+
+
+class CommentUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ["id", "comment"]
+
+    def validate(self, attrs):
+        comment_id = self.context["request"].parser_context["kwargs"]["id"]
+        try:
+            uuid.UUID(str(comment_id))
+        except ValueError:
+            raise serializers.ValidationError({"id": "Invalid UUID format"})
+        try:
+            Comment.objects.get(id=comment_id)
+        except Comment.DoesNotExist:
+            raise serializers.ValidationError({"id": "Comment does not exist"})
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        raise NotImplementedError
+
+    def update(self, instance, validated_data):
+        instance.comment = validated_data.get("comment", instance.comment)
+        instance.save()
+        return instance
+
+
+class CommentDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ["id"]
+
+    def validate(self, attrs):
+        comment_id = attrs.get("id", "")
+        try:
+            Comment.objects.get(id=comment_id)
+        except Comment.DoesNotExist:
+            raise serializers.ValidationError({"id": "Comment does not exist"})
         return super().validate(attrs)
 
     def create(self, validated_data):

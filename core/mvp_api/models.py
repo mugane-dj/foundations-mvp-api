@@ -6,6 +6,8 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 
+__all__ = ["User", "UserManager", "Complaint", "Comment"]
+
 
 class UserManager(BaseUserManager):
     """UserManager definition."""
@@ -45,7 +47,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """User model definition."""
 
-    id = models.BigAutoField(primary_key=True, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
     username = models.CharField(max_length=255, unique=True, null=False, editable=False)
     email = models.EmailField(max_length=255, unique=True, null=False)
     token = models.IntegerField(null=True, editable=True, default=0)

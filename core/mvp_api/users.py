@@ -52,25 +52,25 @@ def get_user_token(request, id):
     return Response({"tokens": user.token}, status=status.HTTP_200_OK)
 
 
-class GetUserView(generics.RetrieveAPIView):
-    serializer_class = UserGetSerializer
-    lookup_field = "id"
-    queryset = User.objects.all()
+@api_view(["GET"])
+def get_user(request, id):
+    try:
+        user = User.objects.get(id=id)
+    except User.DoesNotExist:
+        return Response(
+            {"message": "User does not exist."}, status=status.HTTP_404_NOT_FOUND
+        )
+    serializer = UserGetSerializer(user, many=False)
+    response = {
+        "id": serializer.data.get("id"),
+        "username": serializer.data.get("username"),
+    }
+    return Response(response, status=status.HTTP_200_OK)
 
 
 class ListUserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserGetAllSerializer
-
-
-class CreateUserView(generics.CreateAPIView):
-    serializer_class = UserSerializer
-
-
-class UpdateUserView(generics.UpdateAPIView):
-    serializer_class = UserUpdateSerializer
-    lookup_field = "id"
-    queryset = User.objects.all()
 
 
 class DestroyUserView(generics.DestroyAPIView):
