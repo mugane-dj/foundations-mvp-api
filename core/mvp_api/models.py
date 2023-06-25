@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+from core.storage_backends import PublicMediaStorage
 
 __all__ = ["User", "UserManager", "Complaint", "Comment"]
 
@@ -82,7 +83,7 @@ class Complaint(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=20)
     longitude = models.FloatField(null=True)
     latitude = models.FloatField(null=True)
-    image = models.ImageField(upload_to="complaints")
+    image = models.ImageField(storage=PublicMediaStorage())
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
