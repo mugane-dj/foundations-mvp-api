@@ -14,17 +14,39 @@ from rest_framework.decorators import api_view
 
 @api_view(["POST"])
 def create_user(request):
+    """
+    Create a new user.
+
+    Parameters:
+    - request: The HTTP request object containing user data.
+
+    Returns:
+    - Response: The HTTP response object indicating the success or
+                failure of the user creation.
+
+    """
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         User.objects.create_user(**serializer.validated_data)
         return Response(
-            {"message": "User create successfully"}, status=status.HTTP_201_CREATED
+            {"message": "User created successfully"}, status=status.HTTP_201_CREATED
         )
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["PUT"])
 def update_user(request, id):
+    """
+    Update a user's password.
+
+    Parameters:
+    - request: The HTTP request object containing user data.
+    - id: The ID of the user to update.
+
+    Returns:
+    - Response: The HTTP response object indicating the success or
+                failure of the user update.
+    """
     try:
         user = User.objects.get(id=id)
     except User.DoesNotExist:
@@ -43,6 +65,17 @@ def update_user(request, id):
 
 @api_view(["GET"])
 def get_user_token(request, id):
+    """
+    Retrieve a user's token.
+
+    Parameters:
+    - request: The HTTP request object containing user data.
+    - id: The ID of the user to retrieve.
+
+    Returns:
+    - Response: The HTTP response object containing the user's token.
+
+    """
     try:
         user = User.objects.get(id=id)
     except User.DoesNotExist:
@@ -54,6 +87,17 @@ def get_user_token(request, id):
 
 @api_view(["GET"])
 def get_user(request, id):
+    """
+    Retrieve a user's information.
+
+    Parameters:
+    - request: The HTTP request object containing user data.
+    - id: The ID of the user to retrieve.
+
+    Returns:
+    - Response: The HTTP response object containing the user's information.
+
+    """
     try:
         user = User.objects.get(id=id)
     except User.DoesNotExist:
@@ -69,11 +113,35 @@ def get_user(request, id):
 
 
 class ListUserView(generics.ListAPIView):
+    """
+    List all users.
+
+    Parameters:
+    - request: The HTTP request object containing user data.
+
+    Returns:
+    - Response: The HTTP response object containing the list of users.
+
+    """
+
     queryset = User.objects.all()
     serializer_class = UserGetAllSerializer
 
 
 class DestroyUserView(generics.DestroyAPIView):
+    """
+    Delete a User instance.
+
+    Parameters:
+    - request: The HTTP request object containing user data.
+    - id: The ID of the user to delete.
+
+    Returns:
+    - Response: The HTTP response object indicating the success or
+                failure of the user deletion.
+
+    """
+
     serializer_class = UserDeleteSerializer
     lookup_field = "id"
     queryset = User.objects.all()

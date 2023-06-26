@@ -1,5 +1,6 @@
 import uuid
 from rest_framework import serializers
+from django.contrib.auth.password_validation import validate_password
 from .models import User, Complaint, Comment
 
 
@@ -15,11 +16,17 @@ class UserSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         username = attrs.get("username", "")
         email = attrs.get("email", "")
+        password = attrs.get("password", "")
 
         if User.objects.filter(username=username).exists():
             raise serializers.ValidationError({"username": "Username already exists."})
         if User.objects.filter(email=email).exists():
             raise serializers.ValidationError({"email": "Email already exists."})
+
+        try:
+            validate_password(password)
+        except serializers.ValidationError as e:
+            raise serializers.ValidationError({"password": e.messages})
 
         return super().validate(attrs)
 
@@ -70,6 +77,14 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "password"]
+
+    def validate(self, attrs):
+        password = attrs.get("password", "")
+        try:
+            validate_password(password)
+        except serializers.ValidationError as e:
+            raise serializers.ValidationError({"password": e.messages})
+        return super().validate(attrs)
 
     def create(self, validated_data):
         raise NotImplementedError
