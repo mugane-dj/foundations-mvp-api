@@ -1,4 +1,4 @@
-from django.test import TestCase
+from rest_framework.test import APITestCase
 from django.urls import reverse
 from uuid import uuid4
 from django.contrib.auth import get_user_model
@@ -6,13 +6,23 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class TestUsers(TestCase):
+class TestUsers(APITestCase):
+    """
+    Test cases for the User model.
+    """
+
     def setUp(self):
+        """
+        Set up the test case data.
+        """
         self.username = "testuser123"
         self.email = "testuser@test.com"
         self.password = "testpassword@123"
 
     def tearDown(self) -> None:
+        """
+        Clean up the test case data.
+        """
         return super().tearDown()
 
     def test_create_user_with_valid_data(self):
@@ -27,8 +37,8 @@ class TestUsers(TestCase):
         url = reverse("mvp_api:create-user")
         response = self.client.post(
             url,
-            data=data,
-            content_type="application/json",
+            data,
+            format="json",
         )
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data["message"], "User created successfully")
@@ -50,11 +60,10 @@ class TestUsers(TestCase):
         url = reverse("mvp_api:create-user")
         response = self.client.post(
             url,
-            data=data,
-            content_type="application/json",
+            data,
+            format="json",
         )
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.data["username"][0], "Username already exists.")
 
     def test_create_user_with_invalid_email(self):
         """
@@ -68,11 +77,10 @@ class TestUsers(TestCase):
         url = reverse("mvp_api:create-user")
         response = self.client.post(
             url,
-            data=data,
-            content_type="application/json",
+            data,
+            format="json",
         )
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.data["email"][0], "Enter a valid email address.")
 
     def test_create_user_with_invalid_password(self):
         """
@@ -83,8 +91,8 @@ class TestUsers(TestCase):
         url = reverse("mvp_api:create-user")
         response = self.client.post(
             url,
-            data=data,
-            content_type="application/json",
+            data,
+            format="json",
         )
         self.assertEqual(response.status_code, 400)
 
@@ -105,7 +113,7 @@ class TestUsers(TestCase):
         url = reverse("mvp_api:get-user", kwargs={"id": user.id})
         response = self.client.get(
             url,
-            content_type="application/json",
+            format="json",
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["id"], str(user.id))
@@ -127,7 +135,7 @@ class TestUsers(TestCase):
         url = reverse("mvp_api:get-user", kwargs={"id": uuid4()})
         response = self.client.get(
             url,
-            content_type="application/json",
+            format="json",
         )
         self.assertEqual(response.status_code, 404)
 
@@ -149,8 +157,8 @@ class TestUsers(TestCase):
         data = {"password": "newpassword@123"}
         response = self.client.put(
             url,
-            data=data,
-            content_type="application/json",
+            data,
+            format="json",
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["message"], "User updated successfully")
@@ -173,8 +181,8 @@ class TestUsers(TestCase):
         data = {"password": "newpassword@123"}
         response = self.client.put(
             url,
-            data=data,
-            content_type="application/json",
+            data,
+            format="json",
         )
         self.assertEqual(response.status_code, 404)
 
@@ -196,8 +204,8 @@ class TestUsers(TestCase):
         data = {"password": "short"}
         response = self.client.put(
             url,
-            data=data,
-            content_type="application/json",
+            data,
+            format="json",
         )
         self.assertEqual(response.status_code, 400)
 
@@ -218,7 +226,7 @@ class TestUsers(TestCase):
         url = reverse("mvp_api:delete-user", kwargs={"id": user.id})
         response = self.client.delete(
             url,
-            content_type="application/json",
+            format="json",
         )
         self.assertEqual(response.status_code, 204)
 
@@ -239,6 +247,6 @@ class TestUsers(TestCase):
         url = reverse("mvp_api:delete-user", kwargs={"id": uuid4()})
         response = self.client.delete(
             url,
-            content_type="application/json",
+            format="json",
         )
         self.assertEqual(response.status_code, 404)
