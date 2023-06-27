@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from uuid import uuid4
 from django.contrib.auth import get_user_model
+from .api_client import authorized_client
 
 User = get_user_model()
 
@@ -15,6 +16,7 @@ class TestUsers(APITestCase):
         """
         Set up the test case data.
         """
+        self.client = authorized_client()
         self.username = "testuser123"
         self.email = "testuser@test.com"
         self.password = "testpassword@123"

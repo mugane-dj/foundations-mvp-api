@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.test.client import MULTIPART_CONTENT, encode_multipart, BOUNDARY
 from rest_framework.test import APITestCase
 from mvp_api.models import Complaint
+from .api_client import authorized_client
 
 User = get_user_model()
 
@@ -17,6 +18,7 @@ class TestComplaints(APITestCase):
         """
         Set up the test case data.
         """
+        self.client = authorized_client()
         user = User.objects.create_user(
             "testuser123", "testuser@test.com", "testpassword@123"
         )

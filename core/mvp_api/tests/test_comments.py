@@ -3,6 +3,7 @@ from django.urls import reverse
 from uuid import uuid4
 from django.contrib.auth import get_user_model
 from mvp_api.models import Complaint, Comment
+from .api_client import authorized_client
 
 
 User = get_user_model()
@@ -17,6 +18,7 @@ class TestComments(APITestCase):
         """
         Set up the test case data.
         """
+        self.client = authorized_client()
         user = User.objects.create_user(
             "testuser123", "testuser@test.com", "testpassword@123"
         )

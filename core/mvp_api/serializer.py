@@ -1,6 +1,7 @@
 import uuid
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import PermissionDenied
 from .models import User, Complaint, Comment
 
 
@@ -200,6 +201,12 @@ class ComplaintUpdateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         complaint_id = self.context["request"].parser_context["kwargs"]["id"]
+        request_user = self.context["request"].user
+        if not request_user.is_staff or not request_user.is_superuser:
+            raise PermissionDenied(
+                {"user": "Only staff and superuser can update complaint status"}
+            )
+
         complaint = Complaint.objects.get(id=complaint_id)
         if validated_data.get("status") == "completed":
             user = complaint.user
