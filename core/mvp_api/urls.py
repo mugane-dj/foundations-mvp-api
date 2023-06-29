@@ -5,6 +5,7 @@ from .users import (
     update_user,
     get_user_token,
     get_user,
+    get_user_complaints,
     DestroyUserView,
 )
 from .complaints import (
@@ -29,6 +30,7 @@ urlpatterns = [
     path("users/<uuid:id>", get_user, name="get-user"),
     path("users/", ListUserView.as_view(), name="get-all-users"),
     path("users/<uuid:id>/tokens", get_user_token, name="get-user-token"),
+    path("users/<uuid:id>/complaints", get_user_complaints, name="get-user-complaints"),
     path("users/create", create_user, name="create-user"),
     path("users/update/<uuid:id>", update_user, name="update-user"),
     path("users/delete/<uuid:id>", DestroyUserView.as_view(), name="delete-user"),

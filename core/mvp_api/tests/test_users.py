@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from uuid import uuid4
 from django.contrib.auth import get_user_model
+from mvp_api.models import Complaint
 from .api_client import authorized_client
 
 User = get_user_model()
@@ -138,6 +139,38 @@ class TestUsers(APITestCase):
         response = self.client.get(
             url,
             format="json",
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_user_complaints_with_valid_id(self):
+        """
+        Test that a user's complaints can be retrieved with a valid id
+        """
+        user = User.objects.create_user(
+            username=self.username,
+            email=self.email,
+            password=self.password,
+        )
+        complaint = Complaint.objects.create(
+            title="Test Complaint",
+            description="Test Complaint Description",
+            status="pending",
+            longitude=0.0,
+            latitude=0.0,
+            user=user,
+        )
+        response = self.client.get(
+            reverse("mvp_api:get-user-complaints", kwargs={"id": user.id}),
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data[0]["id"], str(complaint.id))
+
+    def test_get_user_complaints_with_invalid_id(self):
+        """
+        Test that a user's complaints can't be retrieved with an invalid id
+        """
+        response = self.client.get(
+            reverse("mvp_api:get-user-complaints", kwargs={"id": uuid4()}),
         )
         self.assertEqual(response.status_code, 404)
 
