@@ -146,6 +146,30 @@ class TestComplaints(APITestCase):
         response = self.client.get(path=url)
         self.assertEqual(response.status_code, 404)
 
+    def test_get_complaint_comments_with_valid_id(self):
+        """
+        Test that a complaint's comments can be retrieved with a valid id.
+        """
+        complaint = Complaint.objects.create(
+            title=self.title,
+            user_id=self.user_id,
+            description=self.description,
+            status=self.status,
+            longitude=self.longitude,
+            latitude=self.latitude,
+        )
+        url = reverse("mvp_api:get-complaint-comments", kwargs={"id": complaint.id})
+        response = self.client.get(path=url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_complaint_comments_with_invalid_id(self):
+        """
+        Test that a complaint's comments cannot be retrieved with an invalid id.
+        """
+        url = reverse("mvp_api:get-complaint-comments", kwargs={"id": uuid4()})
+        response = self.client.get(path=url)
+        self.assertEqual(response.status_code, 404)
+
     def test_update_complaint_with_valid_id(self):
         """
         Test that a complaint can be updated with a valid id.
