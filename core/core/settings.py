@@ -169,7 +169,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ORIGINS = os.getenv("CORS_ALLOW_ORIGINS", "http://localhost:3000").split(",")
 
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"]
 
