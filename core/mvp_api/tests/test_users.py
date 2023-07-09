@@ -1,4 +1,5 @@
 from rest_framework.test import APITestCase
+from rest_framework.test import APIClient
 from django.urls import reverse
 from uuid import uuid4
 from django.contrib.auth import get_user_model
@@ -6,6 +7,8 @@ from mvp_api.models import Complaint
 from .api_client import authorized_client
 
 User = get_user_model()
+
+Client = APIClient()
 
 
 class TestUsers(APITestCase):
@@ -38,7 +41,7 @@ class TestUsers(APITestCase):
             "password": self.password,
         }
         url = reverse("mvp_api:create-user")
-        response = self.client.post(
+        response = Client.post(
             url,
             data,
             format="json",
@@ -61,7 +64,7 @@ class TestUsers(APITestCase):
 
         # Attempt to create the user again
         url = reverse("mvp_api:create-user")
-        response = self.client.post(
+        response = Client.post(
             url,
             data,
             format="json",
@@ -78,7 +81,7 @@ class TestUsers(APITestCase):
             "password": self.password,
         }
         url = reverse("mvp_api:create-user")
-        response = self.client.post(
+        response = Client.post(
             url,
             data,
             format="json",
@@ -92,7 +95,7 @@ class TestUsers(APITestCase):
         data = {"username": self.username, "email": self.email, "password": "short"}
 
         url = reverse("mvp_api:create-user")
-        response = self.client.post(
+        response = Client.post(
             url,
             data,
             format="json",

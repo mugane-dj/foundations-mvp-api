@@ -10,9 +10,16 @@ from .serializer import (
 from .models import User, Complaint
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import (
+    api_view,
+    permission_classes,
+    authentication_classes,
+)
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 
 
+@permission_classes([AllowAny])
 @api_view(["POST"])
 def create_user(request):
     """
@@ -35,6 +42,8 @@ def create_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
 @api_view(["PUT"])
 def update_user(request, id):
     """
@@ -64,6 +73,8 @@ def update_user(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
 @api_view(["GET"])
 def get_user_token(request, id):
     """
@@ -86,6 +97,8 @@ def get_user_token(request, id):
     return Response({"tokens": user.token}, status=status.HTTP_200_OK)
 
 
+@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
 @api_view(["GET"])
 def get_user_complaints(request, id):
     """
@@ -102,6 +115,8 @@ def get_user_complaints(request, id):
         )
 
 
+@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
 @api_view(["GET"])
 def get_user(request, id):
     """
@@ -141,6 +156,9 @@ class ListUserView(generics.ListAPIView):
 
     """
 
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+
     queryset = User.objects.all()
     serializer_class = UserGetAllSerializer
 
@@ -158,6 +176,9 @@ class DestroyUserView(generics.DestroyAPIView):
                 failure of the user deletion.
 
     """
+
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
 
     serializer_class = UserDeleteSerializer
     lookup_field = "id"
