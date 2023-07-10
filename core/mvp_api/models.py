@@ -48,10 +48,10 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """User model definition."""
 
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     username = models.CharField(max_length=255, unique=True, null=False, editable=False)
-    email = models.EmailField(max_length=255, unique=True, null=False)
-    token = models.IntegerField(null=True, editable=True, default=0)
+    email = models.EmailField(max_length=255, unique=True, null=False, editable=False)
+    token = models.IntegerField(editable=True, default=0)
     is_active = models.BooleanField(default=True, editable=True)
     is_staff = models.BooleanField(default=False, editable=True)
     is_superuser = models.BooleanField(default=False, editable=True)
@@ -77,15 +77,15 @@ class Complaint(models.Model):
     )
 
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    title = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    description = models.TextField()
-    status = models.CharField(choices=STATUS_CHOICES, max_length=20)
-    longitude = models.FloatField(null=True)
-    latitude = models.FloatField(null=True)
+    title = models.CharField(max_length=255, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
+    description = models.TextField(editable=False)
+    status = models.CharField(choices=STATUS_CHOICES, max_length=20, editable=True)
+    longitude = models.FloatField(default="0.0", editable=False)
+    latitude = models.FloatField(default="0.0", editable=False)
     image = models.ImageField(storage=PublicMediaStorage())
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
 
     class Meta:
         """Meta definition for Complaint."""
@@ -101,11 +101,11 @@ class Comment(models.Model):
     """Model definition for Comment."""
 
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
+    comment = models.TextField(editable=True)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
 
     class Meta:
         """Meta definition for Comment."""
