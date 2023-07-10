@@ -62,7 +62,7 @@ class UserGetSerializer(serializers.ModelSerializer):
 class UserGetAllSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username"]
+        fields = ["id", "username", "email"]
 
     def validate(self, attrs):
         raise NotImplementedError

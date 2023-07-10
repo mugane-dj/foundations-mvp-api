@@ -140,6 +140,7 @@ def get_user(request, id):
     response = {
         "id": serializer.data.get("id"),
         "username": serializer.data.get("username"),
+        "email": serializer.data.get("email"),
     }
     return Response(response, status=status.HTTP_200_OK)
 
