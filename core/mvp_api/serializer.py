@@ -202,12 +202,21 @@ class ComplaintUpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         complaint_id = self.context["request"].parser_context["kwargs"]["id"]
         request_user = self.context["request"].user
+        try:
+            User(request_user)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({"user": "User does not exist."})
+
         if not request_user.is_staff or not request_user.is_superuser:
             raise PermissionDenied(
                 {"user": "Only staff and superuser can update complaint status"}
             )
 
-        complaint = Complaint.objects.get(id=complaint_id)
+        try:
+            complaint = Complaint.objects.get(id=complaint_id)
+        except Complaint.DoesNotExist:
+            raise serializers.ValidationError({"id": "Complaint does not exist"})
+
         if validated_data.get("status") == "completed":
             user = complaint.user
             user.token += 100
