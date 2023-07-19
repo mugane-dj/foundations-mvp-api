@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 import { AllUsersContext } from '../src/context/allusers';
 import { UserInterface } from '../src/interfaces/user';
 
-
 function MyApp({ Component, pageProps }: AppProps) {
   const [allUsers, setAllUsers] = useState<UserInterface[]>([])
   const router = useRouter()
