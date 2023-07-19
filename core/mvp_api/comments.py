@@ -12,6 +12,10 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 
 
 class GetCommentView(generics.RetrieveAPIView):
+    """
+    Retrieves a comment object based on its ID.
+    """
+
     permission_classes = [IsAuthenticated]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     serializer_class = CommentGetSerializer
@@ -20,6 +24,10 @@ class GetCommentView(generics.RetrieveAPIView):
 
 
 class ListCommentView(generics.ListAPIView):
+    """
+    Retrieves a list of all comments.
+    """
+
     permission_classes = [IsAuthenticated]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     queryset = Comment.objects.all()
@@ -27,12 +35,20 @@ class ListCommentView(generics.ListAPIView):
 
 
 class CreateCommentView(generics.CreateAPIView):
+    """
+    Creates a new comment object.
+    """
+
     permission_classes = [IsAuthenticated]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     serializer_class = CommentSerializer
 
 
 class UpdateCommentView(generics.UpdateAPIView):
+    """
+    Updates a comment object based on its ID.
+    """
+
     permission_classes = [IsAuthenticated]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     serializer_class = CommentUpdateSerializer
@@ -41,6 +57,10 @@ class UpdateCommentView(generics.UpdateAPIView):
 
 
 class DestroyCommentView(generics.DestroyAPIView):
+    """
+    Deletes a comment object based on its ID.
+    """
+
     permission_classes = [IsAuthenticated]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     serializer_class = CommentDeleteSerializer

@@ -6,6 +6,10 @@ from .models import User, Complaint, Comment
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates user data for User creation.
+    """
+
     class Meta:
         model = User
         fields = ["username", "email", "password"]
@@ -39,6 +43,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserGetSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates user data for retrieval based on ID.
+    """
+
     class Meta:
         model = User
         fields = "__all__"
@@ -60,6 +68,10 @@ class UserGetSerializer(serializers.ModelSerializer):
 
 
 class UserGetAllSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates user data for retrieval.
+    """
+
     class Meta:
         model = User
         fields = ["id", "username", "email"]
@@ -75,6 +87,10 @@ class UserGetAllSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates user data for update.
+    """
+
     class Meta:
         model = User
         fields = ["id", "password"]
@@ -95,6 +111,10 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 
 class UserDeleteSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates user data for deletion.
+    """
+
     class Meta:
         model = User
         fields = ["id"]
@@ -118,6 +138,10 @@ class UserDeleteSerializer(serializers.ModelSerializer):
 
 
 class ComplaintSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates complaint data for Complaint creation.
+    """
+
     class Meta:
         model = Complaint
         fields = [
@@ -148,6 +172,10 @@ class ComplaintSerializer(serializers.ModelSerializer):
 
 
 class ComplaintGetSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates complaint data for retrieval based on ID.
+    """
+
     class Meta:
         model = Complaint
         fields = "__all__"
@@ -168,6 +196,10 @@ class ComplaintGetSerializer(serializers.ModelSerializer):
 
 
 class ComplaintGetAllSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates complaint data for retrieval.
+    """
+
     class Meta:
         model = Complaint
         fields = "__all__"
@@ -180,6 +212,10 @@ class ComplaintGetAllSerializer(serializers.ModelSerializer):
 
 
 class ComplaintUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates complaint data for update.
+    """
+
     class Meta:
         model = Complaint
         fields = ["id", "status"]
@@ -227,6 +263,10 @@ class ComplaintUpdateSerializer(serializers.ModelSerializer):
 
 
 class ComplaintDeleteSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates complaint data for deletion.
+    """
+
     class Meta:
         model = Complaint
         fields = ["id"]
@@ -247,6 +287,10 @@ class ComplaintDeleteSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates comment data for Comment creation.
+    """
+
     class Meta:
         model = Comment
         fields = [
@@ -280,6 +324,10 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class CommentGetSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates comment data for retrieval based on ID.
+    """
+
     class Meta:
         model = Comment
         fields = "__all__"
@@ -300,6 +348,10 @@ class CommentGetSerializer(serializers.ModelSerializer):
 
 
 class CommentGetAllSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates comment data for retrieval.
+    """
+
     class Meta:
         model = Comment
         fields = "__all__"
@@ -312,6 +364,10 @@ class CommentGetAllSerializer(serializers.ModelSerializer):
 
 
 class CommentUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates comment data for update.
+    """
+
     class Meta:
         model = Comment
         fields = ["id", "comment"]
@@ -338,6 +394,10 @@ class CommentUpdateSerializer(serializers.ModelSerializer):
 
 
 class CommentDeleteSerializer(serializers.ModelSerializer):
+    """
+    Serializes and validates comment data for deletion.
+    """
+
     class Meta:
         model = Comment
         fields = ["id"]
