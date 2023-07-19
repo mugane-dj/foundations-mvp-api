@@ -33,7 +33,7 @@ cp .env.example .env
 ```
 ## Usage
 To use the web app, follow these steps
-1. Run the server in development mode
+1. Run the core server in development mode
 ```
 python3 core/manage.py runserver
 ```
