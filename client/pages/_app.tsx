@@ -3,15 +3,9 @@ import '../styles/globals.css'
 import Head from "next/head";
 import Script from "next/script";
 import { useEffect, useState } from 'react';
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
-import LoginPage from './login';
 import { useRouter } from 'next/router';
 import { AllUsersContext } from '../src/context/allusers';
 import { UserInterface } from '../src/interfaces/user';
-
-config.autoAddCss = false;
-
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [allUsers, setAllUsers] = useState<UserInterface[]>([])

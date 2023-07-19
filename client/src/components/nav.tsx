@@ -16,8 +16,11 @@ const Nav =( {isSidebarActive, option}:{isSidebarActive:boolean, option:string} 
         <Link href="/profile">Profile</Link> 
     </li>
     <li>
-        <a href="#">Tokens</a>
+        <Link href="/login">Logout</Link> 
     </li>
+    {/* <li>
+        <a href="#">Tokens</a>
+    </li> */}
 </ul>
 
 </nav>
